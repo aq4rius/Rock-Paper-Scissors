@@ -54,10 +54,12 @@ function game() {
       let result = playRound(playerSelection, getComputerChoice());
 
       if (result.slice(0, 5) === "Draw!") {
-        playerPoints++;
-        computerPoints++;
+        // No points granted!
+        // playerPoints++;
+        // computerPoints++;
       } else if (result.slice(0, 8) === "You Win!") playerPoints++;
       else computerPoints++;
+
       console.clear();
       console.log(`${result}
     Your points: ${playerPoints}
