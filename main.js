@@ -7,15 +7,8 @@ function getComputerChoice() {
   else return "Scissor";
 }
 
-//Change user's input to be in this form: "first letter uppercase, the rest lowercase"
-function addjustCase(word) {
-  return (word = word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
-}
-
 //Function that plays a single round
 function playRound(playerSelection, computerSelection) {
-  playerSelection = addjustCase(playerSelection);
-
   switch (playerSelection) {
     case "Rock":
       if (computerSelection === "Rock") return "Draw!";
@@ -37,43 +30,25 @@ function playRound(playerSelection, computerSelection) {
   }
 }
 
-// Function to start a 5 round game and keep score of it
-function game() {
-  let playerPoints = 0;
-  let computerPoints = 0;
-  for (let i = 0; i < 5; i++) {
-    let playerSelection = prompt("Choose Rock/Paper/Scissors !");
-    //Check if the player wrote anything and if the input is correct
-    if (playerSelection === null) {
-      break;
-    } else if (
-      addjustCase(playerSelection) === "Rock" ||
-      addjustCase(playerSelection) === "Paper" ||
-      addjustCase(playerSelection) === "Scissors"
-    ) {
-      let result = playRound(playerSelection, getComputerChoice());
-
-      if (result.slice(0, 5) === "Draw!") {
-        // No points granted!
-        // playerPoints++;
-        // computerPoints++;
-      } else if (result.slice(0, 8) === "You Win!") playerPoints++;
-      else computerPoints++;
-
-      console.clear();
-      console.log(`${result}
-    Your points: ${playerPoints}
-    Computer points: ${computerPoints}`);
-    } else {
-      alert("Incorrect input! Try Again");
-      i--;
-    }
-  }
-  if ((playerPoints || computerPoints) != 0) {
-    if (playerPoints === computerPoints) console.log("Draw!");
-    else if (playerPoints > computerPoints) console.log("You Won!");
-    else console.log("You lost!");
-  }
+function getplayerChoice(e) {
+  const rock = document.querySelector(".rock");
+  const paper = document.querySelector(".paper");
+  const scissors = document.querySelector(".scissors");
+  if (e.target === rock) {
+    return "Rock";
+    //console.log("Rock");
+  } else if (e.target === paper) {
+    return "Paper";
+    //console.log("Paper");
+  } else if (e.target === scissors) {
+    return "Scissors";
+    //console.log("Scissors");
+  } else return;
 }
 
-game();
+window.addEventListener("pointerdown", function (e) {
+  const playerChoice = getplayerChoice(e);
+  const computerChoice = getComputerChoice();
+  const result = playRound(playerChoice, computerChoice);
+  console.log(result);
+});
