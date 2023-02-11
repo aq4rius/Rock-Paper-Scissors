@@ -7,6 +7,7 @@ function getComputerChoice() {
   else return "Scissors";
 }
 
+// Player choice selection
 function getplayerChoice(e) {
   const rock = document.querySelector(".rock");
   const paper = document.querySelector(".paper");
@@ -22,8 +23,6 @@ function getplayerChoice(e) {
 
 //Function that plays a single round
 function playRound(playerSelection, computerSelection) {
-  console.log(playerSelection);
-  console.log(computerSelection);
   switch (playerSelection) {
     case "Rock": {
       if (computerSelection === "Rock") return "Draw!";
@@ -45,13 +44,13 @@ function playRound(playerSelection, computerSelection) {
 
 let playerScore = 0;
 let computerScore = 0;
+const computerSpan = document.querySelector(".computer");
+const playerSpan = document.querySelector(".player");
+const displayResult = document.querySelector(".results");
+const scoreBoard = document.querySelector("#score");
+const selectButton = document.querySelectorAll(".button");
 
 function game(results) {
-  const computerSpan = document.querySelector(".computer");
-  const playerSpan = document.querySelector(".player");
-  const displayResult = document.querySelector(".results");
-  const scoreBoard = document.querySelector("#score");
-  console.log(results);
   switch (results) {
     case "Win1": {
       playerScore++;
@@ -95,31 +94,53 @@ function game(results) {
     }
   }
 
+  //display the result and disable selection after reaching 5 points
   if (playerScore === 5) {
     displayResult.textContent = "You won the game!";
-    let resetButton = document.querySelector(".btn");
-    if (!resetButton) {
-      resetButton = document.createElement("button");
-      resetButton.classList.add("btn");
-      resetButton.textContent = "Reset";
-      scoreBoard.appendChild(resetButton);
+    for (let i = 0; i < selectButton.length; i++) {
+      selectButton[i].classList.add("disable");
     }
+    return playerScore;
   } else if (computerScore === 5) {
     displayResult.textContent = "You lost the game!";
-    let resetButton = document.querySelector(".btn");
-    if (!resetButton) {
-      resetButton = document.createElement("button");
-      resetButton.classList.add("btn");
-      resetButton.textContent = "Reset";
-      scoreBoard.appendChild(resetButton);
+    for (let i = 0; i < selectButton.length; i++) {
+      selectButton[i].classList.add("disable");
     }
+    return computerScore;
   }
 }
 
 window.addEventListener("pointerdown", function (e) {
+  if (playerScore === 5 || computerScore === 5) {
+    return;
+  }
+
   const playerChoice = getplayerChoice(e);
   const computerChoice = getComputerChoice();
   const result = playRound(playerChoice, computerChoice);
 
-  game(result);
+  if (game(result) === 5) {
+    let resetButton = document.querySelector(".btn");
+    if (!resetButton) {
+      resetButton = document.createElement("button");
+      resetButton.classList.add("btn");
+      resetButton.textContent = "Restart";
+      scoreBoard.appendChild(resetButton);
+
+      resetButton.addEventListener("pointerdown", () => {
+        playerScore = 0;
+        computerScore = 0;
+        computerSpan.textContent = `Computer Score: ${computerScore}`;
+        playerSpan.textContent = `Player Score: ${playerScore}`;
+
+        this.setTimeout(() => {
+          resetButton.remove();
+          displayResult.textContent = "New Game!";
+          for (let i = 0; i < selectButton.length; i++) {
+            selectButton[i].classList.remove("disable");
+          }
+        }, 800);
+      });
+    }
+  }
 });
