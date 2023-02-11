@@ -11,6 +11,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  font-size: 20px;
 }
 
 header {
@@ -41,12 +42,12 @@ main {
   transition: all 0.3s ease;
 }
 
-.button:hover {
+.button:not(.disable):hover {
   cursor: pointer;
   font-size: 120px;
 }
 
-.button:active {
+.button:not(.disable):active {
   transform: translate(5px, 5px);
   box-shadow: none;
 }
@@ -80,4 +81,14 @@ footer {
 
 i {
   color: white;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
